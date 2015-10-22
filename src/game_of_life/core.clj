@@ -7,9 +7,11 @@
 (def window-box
   { :width 500
     :height 500
-    :point-size 2
-    :xunits 250
-    :yunits 250
+    :point-size 5
+    :xunits 100
+    :yunits 100
+    :xoffset 0
+    :yoffset 0
     :fps 15 })
 
 ; Definir el concepto de celda
@@ -19,69 +21,51 @@
 
 (def life-grid
   "First Grid"
-  (cells/grid (:xunits window-box) (:yunits window-box)))
+  (into {} (cells/grid (:xunits window-box) (:yunits window-box))))
 
-
-(defn vector-rand
-  "Get n of random 1's"
-  [units]
-  (into [] (take units (repeatedly #(rand-int 2)))))
-
-(defn initial-life
-  "doc-string"
-  [grid]
-  (let [xs (/ (:width window-box) (:point-size window-box))
-         ys (/ (:height window-box) (:point-size window-box))]
-    (into [] (take ys (repeatedly #(vector-rand xs))))))
 
 (defn draw-point [x y dot]
   (if (= dot 1)
     (do
-      (let [size 2]
+      (let [size (:point-size window-box)]
         (q/stroke 0)             ;; Set the stroke colour to a random grey
         (q/stroke-weight size)       ;; Set the stroke thickness randomly
-        (q/point (* x size) (* y size))))))
+        (q/point
+          (+ (:xoffset window-box) (* x size))
+          (+ (:yoffset window-box)(* y size))
+      )))))
 
 (defn setup []
-  ; Set frame rate to 30 frames per second.
   (q/frame-rate (:fps window-box))
-  ; Set color mode to HSB (HSV) instead of default RGB.
+
   (q/color-mode :rgb)
-  ; setup function returns initial state. It contains
-  ; circle color and position.
-  {:color 0
-   :angle 0}
-   {
-    :grid (initial-life 0)
-    })
+   { :grid life-grid })
+
+(defn life
+  "doc-string"
+  [grid]
+  (into {}
+    (doall
+      (for [[k cell] grid]
+        (if (cells/is-dead cell)
+          (cells/revive cell grid)
+          (cells/kill cell grid)))
+      ))
+  )
 
 (defn update-state [state]
   ; Update sketch state by changing circle color and position.
   (let [grid (:grid state )]
-   { :grid (initial-life grid)}))
-
-
-(defn print-row
-  "Printing a row of dots"
-  [row-index row]
-  (doall
-    (map-indexed
-      (fn [idx item]
-        (draw-point idx row-index item))
-      row))
-
-  )
+   { :grid  (life grid) }))
 
 (defn draw-state [state]
   ; Clear the sketch by filling it with light-grey color.
   (q/background 240)
-  (let [v (:grid state)]
+  (let [grid (:grid state)]
     (doall
-      (map-indexed
-        (fn [idx row]
-          (print-row idx row))
-        v)))
-  )
+      (for [[k cell] grid]
+        (draw-point (:x cell) (:y cell) (:life cell) )))
+    ))
 
 (q/defsketch game_of_life
   :title "You spin my circle right round"
