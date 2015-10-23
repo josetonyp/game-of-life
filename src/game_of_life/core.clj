@@ -5,14 +5,14 @@
             [clojure.tools.namespace.repl :refer [refresh]]))
 
 (def window-box
-  { :width 500
-    :height 500
+  { :width 851
+    :height 315
     :point-size 5
-    :xunits 100
-    :yunits 100
+    :xunits (/ 851 5)
+    :yunits (/ 315 5)
     :xoffset 0
     :yoffset 0
-    :fps 15 })
+    :fps 30 })
 
 ; Definir el concepto de celda
 ; Econtrar los puntos alrededor de una celda
@@ -65,7 +65,9 @@
     (doall
       (for [[k cell] grid]
         (draw-point (:x cell) (:y cell) (:life cell) )))
-    ))
+    )
+  ; (q/save-frame "pretty-pic-####.jpg")
+  )
 
 (q/defsketch game_of_life
   :title "You spin my circle right round"

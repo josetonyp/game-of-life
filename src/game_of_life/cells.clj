@@ -59,12 +59,12 @@
 
 (defn kill [oldCell grid]
   (cond
-    (< (n-neighborgs oldCell grid) 2)
+    (< (n-neighborgs oldCell grid) 1)
       (cell 0 (:x oldCell) (:y oldCell))
-    (> (n-neighborgs oldCell grid) 3)
+    (> (n-neighborgs oldCell grid) 4)
       (cell 0 (:x oldCell) (:y oldCell))
     :else
-      (cell 1 (:x oldCell) (:y oldCell))
+      (keep-cell oldCell)
     ))
 
 
