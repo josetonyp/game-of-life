@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [quil "2.2.6"]
+                 [me.raynes/fs "1.4.6"]
                  [org.clojure/tools.namespace "0.2.11"]]
 
   :main game_of_life.core )
