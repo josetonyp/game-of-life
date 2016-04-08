@@ -1,18 +1,12 @@
 # game_of_life
 
-A Quil sketch designed to ... well, that part is up to you.
+This is a naive implementation of the Game of Life. It is built to try to join a bit of algorithms practice in Clojure and some artistic use of Quil.
 
-## Usage
 
-LightTable - open `core.clj` and press `Ctrl+Shift+Enter` to evaluate the file.
-
-Emacs - run cider, open `core.clj` and press `C-c C-k` to evaluate the file.
-
-REPL - run `(require 'game_of_life.core)`.
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright © 2016 josetonyp
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
